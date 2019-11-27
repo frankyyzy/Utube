@@ -2,10 +2,9 @@ import requests
 import sys
 import json
 import pandas as pd
-import re
 import numpy as np
 
-with open('api_key_mia.txt', 'r') as file:
+with open('api_key_wendy.txt', 'r') as file:
     api_key = file.readline()
 
 
@@ -45,7 +44,7 @@ def standardize_length(input):
     return hour, min, sec
 
 
-US_videos = pd.read_csv('length.csv')
+US_videos = pd.read_csv('./length.csv')
 row = US_videos.shape[0]
 hour = np.repeat(-1, row)
 min = np.repeat(-1, row)
@@ -58,7 +57,7 @@ sec = np.repeat(-1, row)
 
 unavailable_count = 0
 
-dailyNum = 9000
+dailyNum = 7000
 startIndex = 0
 first = True
 stop = 0
@@ -93,45 +92,33 @@ for i, r in US_videos[startIndex: startIndex + dailyNum].iterrows():
             break
 
         hour[i], min[i], sec[i] = standardize_length(length)
-        # result = re.search('PT(.*)H(.*)M(.*)S', length)
 
-        # if result is not None:
-        #     hour[i] = result.group(1)
-        #     min[i] = result.group(2)
-        #     sec[i] = result.group(3)
-
-        # else:
-        #     result = re.search('PT(.*)M(.*)S', length)
-
-        #     # may have  only seconds or only minutes instead of M and S
-        #     # may have only hours and seconds
-        #     if result is not None:
-        #         currmin = result.group(1)
-        #         currsec = result.group(2)
-        #         hour[i] = 0
-        #         min[i] = currmin
-        #         sec[i] = currsec
-        #     else:
-        #         result = re.search('PT(.*)S', length)
-
-        #         if result is not None:
-        #             hour[i] = 0
-        #             min[i] = 0
-        #             sec[i] = result.group(1)
-        #         else:
-        #             result = re.search('PT(.*)M', length)
-        #             if result is not None:
-        #                 hour[i] = 0
-        #                 min[i] = result.group(1)
-        #                 sec[i] = 0
-        #             else:
-        #                 print(length)
+        if i % 1000 == 0:
+            print('saving ', startIndex, ' to ', i, 'to disk')
+            US_videos['hour'] = hour
+            US_videos['min'] = min
+            US_videos['sec'] = sec
+            US_videos.to_csv(r'length.csv', index=False,
+                             line_terminator='\r\n')
 
     except IndexError:
         hour[i] = 0
         min[i] = 0
         sec[i] = 0
+        US_videos['hour'] = hour
+        US_videos['min'] = min
+        US_videos['sec'] = sec
+        US_videos.to_csv(r'length.csv', index=False, line_terminator='\r\n')
         unavailable_count += 1
+    except:  # live stream videos
+        hour[i] = 0
+        min[i] = 0
+        sec[i] = 0
+        US_videos['hour'] = hour
+        US_videos['min'] = min
+        US_videos['sec'] = sec
+        US_videos.to_csv(r'length.csv', index=False, line_terminator='\r\n')
+        print('unexpected error(possibly live stream video)')
 
 
 print('unavailable videos', unavailable_count)
@@ -143,4 +130,4 @@ US_videos['sec'] = sec
 if stop == 0:
     stop = startIndex + dailyNum
 print(US_videos[stop - 5:stop + 5])
-US_videos.to_csv(r'length.csv', index=False)
+US_videos.to_csv(r'length.csv', index=False, line_terminator='\r\n')
