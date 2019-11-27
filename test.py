@@ -1,10 +1,13 @@
-import pandas as import pd
+import pandas as pd
 
+# US_videos = pd.read_csv('./youtube-new/USvideos.csv')
+# US_videos.to_csv(r'testlength.csv', index=False, line_terminator='\r\n')
 
-# initialize list of lists
-data = [['tom', 10], ['nick', 15], ['juli', 14]]
+US_videos = pd.read_csv('./length.csv')
+for i in range(US_videos.shape[0]):
+    if (len(US_videos['video_id'][i]) != 11):
+        print(i)
+        print(US_videos['description'][i - 1])
+        print(US_videos['video_id'][i])
 
-# Create the pandas DataFrame
-df = pd.DataFrame(data, columns=['Name', 'Age'])
-
-df[0:1]
+print(US_videos['video_id'].str.len().unique())
