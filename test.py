@@ -11,3 +11,4 @@ for i in range(US_videos.shape[0]):
         print(US_videos['video_id'][i])
 
 print(US_videos['video_id'].str.len().unique())
+print(US_videos['video_id'].shape)
