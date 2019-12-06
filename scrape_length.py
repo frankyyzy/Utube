@@ -4,7 +4,7 @@ import json
 import pandas as pd
 import numpy as np
 
-with open('api_key_wendy.txt', 'r') as file:
+with open('./api_keys/charles.txt', 'r') as file:
     api_key = file.readline()
 
 
@@ -84,6 +84,14 @@ for i, r in US_videos[startIndex: startIndex + dailyNum].iterrows():
 
     # some videos are unavailable such as: n30k5CwLhS4
     try:
+
+        if curr_id == '#NAME?' or curr_id == '#VALUE!':
+            hour[i] = 0
+            min[i] = 0
+            sec[i] = 0
+            unavailable_count += 1
+            continue
+
         length = get_length(curr_id)
 
         if length == 'Error':
@@ -105,19 +113,22 @@ for i, r in US_videos[startIndex: startIndex + dailyNum].iterrows():
         hour[i] = 0
         min[i] = 0
         sec[i] = 0
-        US_videos['hour'] = hour
-        US_videos['min'] = min
-        US_videos['sec'] = sec
-        US_videos.to_csv(r'length.csv', index=False, line_terminator='\r\n')
         unavailable_count += 1
     except:  # live stream videos
+        # print('saving ', startIndex, ' to ', i, 'to disk')
+        # US_videos['hour'] = hour
+        # US_videos['min'] = min
+        # US_videos['sec'] = sec
+        # US_videos.to_csv(r'length.csv', index=False,
+        #                  line_terminator='\r\n')
+        # print("Unexpected error:", sys.exc_info()[0])
+        # print(r)
+        # print(length)
+        # raise
         hour[i] = 0
         min[i] = 0
         sec[i] = 0
-        US_videos['hour'] = hour
-        US_videos['min'] = min
-        US_videos['sec'] = sec
-        US_videos.to_csv(r'length.csv', index=False, line_terminator='\r\n')
+        unavailable_count += 1
         print('unexpected error(possibly live stream video)')
 
 
