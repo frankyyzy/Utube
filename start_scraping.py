@@ -4,7 +4,7 @@ import json
 import pandas as pd
 import numpy as np
 
-US_videos = pd.read_csv('./youtube-new/INvideos.csv')
+US_videos = pd.read_csv('./youtube-new/FRvideos.csv')
 row = US_videos.shape[0]
 hour = np.repeat(-1, row)
 min = np.repeat(-1, row)
