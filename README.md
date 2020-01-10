@@ -1,9 +1,12 @@
-This is your group repo for your final project for COGS108.
+This is a project analyzing trending Youtube videos using this Kaggle Dataset: https://www.kaggle.com/datasnaek/youtube-new.
 
-This repository is private, and is only visible to the course instructors and your group mates; it is not visible to anyone else.
 
-This repository will be frozen on the due date: 11:59pm on Tuesday, June 13th. No further changes can be made after that time.
+What are the main factors influencing the popularity of a youtube video? Is it possible to estimate the popularity of a video based on its title, category, length, etc.? 
 
-Your final project will be graded based solely on a project notebook.
+In this project, we compiled a jupyter notebook(FinalProject.ipynb in this repository) to examine the metadata of the videos and its relationship to the views, likes and comment counts as a measure of its popularity.
 
-Make sure you have a notebook called 'FinalProject.ipynb' present in this repository by the due date.
+Working in a group of five, we carried out the following data science practices in our notebook:
+- data scraping
+- data cleaning & pre-processing
+- data visualization
+- data analysis
